@@ -6,7 +6,7 @@
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:02:37 by tlebon            #+#    #+#             */
-/*   Updated: 2025/02/06 17:41:50 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/02/06 18:10:58 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,24 @@ t_bool	check_extension(char *path, char *extension)
 
 int	main (int ac, char **av)
 {
-	int	fd;
-
+	t_mlx	s_mlx;
+	t_map	s_map;
+	int		fd;
+	
 	if (ac != 2)
-	{
-		ft_printf("Usage : ./cub3D valid_map_path\nThanks\n");
-		return (1);
-	}
+		return (ft_printf("Usage : ./cub3D valid_map_path\nThanks\n"), 1);
 	if (check_extension(av[1], ".cub") == FALSE)
-	{
-		ft_putstr_fd("Wrong file. You need to select a .cub file\n", 2);
-		return (2);
-	}
+		return (ft_putstr_fd("You need to select a .cub file\n", 2), 2);
 	fd = open(av[1], O_RDONLY); // Comment check si c'est bien un fichier et non un directory ?
 	if (fd < 0)	
-	{
-		perror("Open failed");
-		return (3);
-	}
+		return (perror("Open failed"), 3);
+	ft_printf("Map file open with success !\n");
+	if (initialise_s_map(&s_map) == FALSE)
+		return (4);
+	if (initialise_s_mlx(&s_mlx) == FALSE)
+		return (5);
+	mlx_loop(s_mlx.mlx);
 	return (0);
 }
+
+

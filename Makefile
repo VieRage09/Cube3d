@@ -21,6 +21,7 @@ LIBFT_PATH	=	$(LIBS_PATH)libft/
 LIBFT		=	$(LIBFT_PATH)$(LIBFT_NAME)
 
 MLX_PATH	=	$(LIBS_PATH)minilibx/
+MLX_LINK	=	-L $(MLX_PATH) -lmlx -lXext -lX11
 #-------------------------------------------------------#
 
 #---------------------HEADERS---------------------------#
@@ -40,7 +41,7 @@ OBJS		=	$(addprefix $(OBJ_PATH), $(OBJ))
 all: $(NAME)
 
 $(NAME): libft mlx $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(INC)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(MLX_LINK) $(INC)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HDR)
 	@mkdir -p $(dir $@)
