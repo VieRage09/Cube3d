@@ -2,13 +2,14 @@ NAME	= cub3D
 
 #---------------------COMPILATION-----------------------#
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra
+CFLAGS		=	-g -Wall -Werror -Wextra
 #-------------------------------------------------------#
 
 #---------------------SOURCES---------------------------#
 SRC_PATH	=	src/
 SRC			=						\
 				main.c				\
+				initialize.c				\
 
 SRCS		=	$(addprefix $(SRC_PATH), $(SRC))
 #-------------------------------------------------------#
