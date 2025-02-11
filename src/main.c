@@ -6,14 +6,14 @@
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:02:37 by tlebon            #+#    #+#             */
-/*   Updated: 2025/02/08 00:01:57 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/02/11 21:14:50 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-
-t_bool	check_extension(char *path, char *extension)
+// Returns true if the file pointed to by path has the matching extension
+static t_bool	check_extension(char *path, char *extension)
 {
 	size_t	p_size;
 	size_t	e_size;
@@ -29,41 +29,45 @@ t_bool	check_extension(char *path, char *extension)
 	return (free(ext_comp), FALSE);
 }
 
-void	free_all(t_map *s_map)
+// Initialize the global struct that contains all the necessary structs
+// Returns false on error
+t_bool	init_global(t_global *s_global, char *path)
 {
-	free(s_map->s_texture.NO);
-	free(s_map->s_texture.SO);
-	free(s_map->s_texture.EA);
-	free(s_map->s_texture.WE);
-	free(s_map->s_texture.floor);
-	free(s_map->s_texture.ceiling);
+	s_global->s_map = malloc(sizeof(t_map));
+	if (!s_global->s_map)
+		return (FALSE);
+	s_global->s_mlx = malloc(sizeof(t_mlx));
+	if (!s_global->s_mlx)
+		return (free(s_global->s_map), FALSE);
+	if (init_s_map(s_global->s_map, path) == FALSE)
+		return (FALSE);
+	ft_printf("Map struct created with success !\n");
+	ft_print_str_tab(s_global->s_map->map_tab);
+	if (init_s_mlx(s_global->s_mlx) == FALSE)
+		return (FALSE);
+	return (TRUE);
 }
-
 
 int	main (int ac, char **av)
 {
-	// t_mlx	s_mlx;
-	t_map	s_map;
-	int		fd;
-	
+	t_global	s_global;
+
 	if (ac != 2)
 		return (ft_printf("Usage : ./cub3D valid_map_path\nThanks\n"), 1);
 	if (check_extension(av[1], ".cub") == FALSE)
 		return (ft_putstr_fd("You need to select a .cub file\n", 2), 2);
-	fd = open(av[1], O_RDONLY); // Comment check si c'est bien un fichier et non un directory ?
-	if (fd < 0)	
-		return (perror("Open failed"), 3);
-	ft_printf("Map file open with success !\n");
-	if (init_s_map(&s_map, fd) == FALSE)
-		return (4);
-	ft_printf("Map struct created with success !\n");
-	// if (init_s_mlx(&s_mlx) == FALSE)
-	// 	return (5);
-	// mlx_loop(s_mlx.mlx);
-	free_all(&s_map);
-	if (close(fd) != 0)
-		return (5);
+	if (!init_global(&s_global, av[1]))
+		return (3);
+	game_loop(&s_global);
 	return (0);
 }
 
+// int	main(void)
+// {
+// 	// char	*s = "	  1111111111111  1111 11  1			   \n";
+// 	char	*s = ft_strdup(" 11				\n   ");
+// 	char	*test = trim_trail(s);
+// 	printf("%s", test);
+// 	return (0);
+// }
 

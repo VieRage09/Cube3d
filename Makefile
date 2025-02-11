@@ -9,7 +9,12 @@ CFLAGS		=	-g -Wall -Werror -Wextra
 SRC_PATH	=	src/
 SRC			=						\
 				main.c				\
-				initialize.c				\
+				clean_up.c			\
+				errors.c			\
+				game_loop.c			\
+				init_mlx.c			\
+				init_s_map.c		\
+				utils.c				\
 
 SRCS		=	$(addprefix $(SRC_PATH), $(SRC))
 #-------------------------------------------------------#
