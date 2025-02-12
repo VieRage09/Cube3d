@@ -9,6 +9,7 @@ CFLAGS		=	-g -Wall -Werror -Wextra
 SRC_PATH	=	src/
 SRC			=						\
 				main.c				\
+				check_map.c			\
 				clean_up.c			\
 				errors.c			\
 				game_loop.c			\

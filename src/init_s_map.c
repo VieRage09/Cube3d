@@ -6,7 +6,7 @@
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:10:28 by tlebon            #+#    #+#             */
-/*   Updated: 2025/02/11 20:33:57 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/02/12 18:47:13 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,9 +162,19 @@ static char	*create_map_tab_str(char *line, size_t size)
 	while (i < size)
 	{
 		if (i < ft_strlen(trim))
+		{
+			if ((trim[i] == ' ' || trim[i] == '\t'))
+			{
+				if (i > 0 && str[i - 1] != '-')
+					str[i] = INSPACE;
+				else
+					str[i] = OUTSIDE;
+			}
+			else
 				str[i] = trim[i];
+		}
 		else
-			str[i] = ' ';
+			str[i] = OUTSIDE;
 		i++;
 	}
 	return (free(trim), str);
@@ -213,7 +223,6 @@ static t_bool	init_map_tab(t_map *s_map, char *path, int fd)
 	fd = open(path, O_RDONLY); // Comment check si c'est bien un fichier et non un directory ?
 	if (fd < 0)	
 		return (perror("Open failed"), FALSE);
-	ft_printf("Skipping textures\n");
 	skip_textures(fd);
 	if (!fill_map_tab(s_map, fd))
 		return (close(fd), FALSE);
@@ -229,12 +238,9 @@ t_bool	init_s_map(t_map *s_map, char *path)
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (perror("Open failed"), FALSE);
-	ft_printf("Map file opened with success\n");
 	if (!init_textures(s_map, fd))	
-		return (close(fd), FALSE);
-	ft_printf("Texture paths loaded with succes\n");
+		return (manage_error("Failed to init textures\n"), close(fd), FALSE);
 	if (!init_map_tab(s_map, path, fd))
-		return (FALSE);
-	ft_printf("Map tab initialized with success\n");
+		return (manage_error("Failed to init map tab\n"), FALSE);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:47:55 by tlebon            #+#    #+#             */
-/*   Updated: 2025/02/11 20:22:35 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/02/12 18:34:14 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,25 @@ char	*trim_trail(char *str)
 	if (!trim)
 		return (NULL);
 	return (trim);
+}
+
+t_bool	is_player_spawn(char c)
+{
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (TRUE);
+	return (FALSE);
+}
+
+t_bool	is_actual_map(char c)
+{
+	if (c == '0' || c == '1' || is_player_spawn(c)) // Rajouter INSPACE ?
+		return (TRUE);
+	return (FALSE);
+}
+
+t_bool	is_valid(char c)
+{
+	if (is_actual_map(c) || c == INSPACE || c == OUTSIDE)
+		return (TRUE);
+	return (FALSE);
 }

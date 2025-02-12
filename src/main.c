@@ -6,7 +6,7 @@
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:02:37 by tlebon            #+#    #+#             */
-/*   Updated: 2025/02/11 21:14:50 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/02/12 18:16:38 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	main (int ac, char **av)
 		return (ft_putstr_fd("You need to select a .cub file\n", 2), 2);
 	if (!init_global(&s_global, av[1]))
 		return (3);
+	if (!check_map(&s_global))
+		return (4);
 	game_loop(&s_global);
 	return (0);
 }
