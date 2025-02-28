@@ -6,7 +6,7 @@
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:10:28 by tlebon            #+#    #+#             */
-/*   Updated: 2025/02/12 18:47:13 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/02/28 22:53:34 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,20 +161,21 @@ static char	*create_map_tab_str(char *line, size_t size)
 	str[size] = '\0';
 	while (i < size)
 	{
-		if (i < ft_strlen(trim))
-		{
-			if ((trim[i] == ' ' || trim[i] == '\t'))
-			{
-				if (i > 0 && str[i - 1] != '-')
-					str[i] = INSPACE;
-				else
-					str[i] = OUTSIDE;
-			}
-			else
-				str[i] = trim[i];
-		}
-		else
-			str[i] = OUTSIDE;
+		// if (i < ft_strlen(trim))
+		// {
+		// 	if ((trim[i] == ' ' || trim[i] == '\t'))
+		// 	{
+		// 		if (i > 0 && str[i - 1] != '-')
+		// 			str[i] = INSPACE;
+		// 		else
+		// 			str[i] = OUTSIDE;
+		// 	}
+		// 	else
+		// 		str[i] = trim[i];
+		// }
+		// else
+		// 	str[i] = OUTSIDE;
+		str[i] = trim[i];
 		i++;
 	}
 	return (free(trim), str);

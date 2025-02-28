@@ -6,7 +6,7 @@
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:47:55 by tlebon            #+#    #+#             */
-/*   Updated: 2025/02/12 18:34:14 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/02/28 23:15:35 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_bool	is_player_spawn(char c)
 
 t_bool	is_actual_map(char c)
 {
-	if (c == '0' || c == '1' || is_player_spawn(c)) // Rajouter INSPACE ?
+	if (c == '0' || c == '1' || is_player_spawn(c) || c == INSPACE) // Rajouter INSPACE ?
 		return (TRUE);
 	return (FALSE);
 }

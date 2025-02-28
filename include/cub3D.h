@@ -6,7 +6,7 @@
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:03:07 by tlebon            #+#    #+#             */
-/*   Updated: 2025/02/12 18:42:58 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/02/28 23:50:54 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@ typedef enum	e_keycode
 
 typedef enum	e_char
 {
-	OUTSIDE = '-',
+	OUTSIDE = '-', // Pas vraiment necessaire
 	INSPACE = ' '
 }t_char;
 
+typedef struct s_pos
+{
+	int	xpos;
+	int	ypos;
+}t_pos;
+ 
 typedef struct	s_textures
 {
 	char	*NO;
