@@ -1,1 +1,46 @@
-Le makefile relink sur mlx bordel de merde
+
+Prio :
+	-relink makefile (sur mlx ?)
+	-norme
+
+
+
+Pas Prio :
+	-nouvelles textures plus jolies
+
+	
+
+
+
+Tests a faire:
+
+I. Arguments + extension
+	- Check nombre d'argument (uniquement 1 --> le path du fichier map)						V
+	- Path vers un fichier inexistant														V
+	- Path vers un dossier																	V
+	- Path vers un fichier chmod															V 	=> Maybe error msg a revoir
+	- Mauvaise extension de fichier															V
+	- Path vers un DOSSIER .cub																V
+
+II. Fichier map
+	- Chaque type d'elements (sauf la map) peux etre dans le desordre						V 
+	et separe par une ou plusieurs lignes vides
+	- Sauf pour la map les infos de chaque type d'elements peuvent etre						V	 
+	separe par un ou plusieurs espaces
+
+
+	- Mauvais path vers les textures (fichier .xpm inexistant ou path vers des dossiers)	V
+	- path vers des fichiers sans extension xpm												V
+	- RGB du ciel et du sol mauvais (< 0 ou > 255 / trop de nombre / pas assez de nombres)	V 
+
+III. Map parsing et validitee
+	- Map ouverte (un ou plusieurs trous, apres un couloir, donut ...)						V 
+	- Mauvais char dans la map																V
+	- Pas ou plusieurs spawn de joueur														V					 
+	- Espaces a divers endroits (colles au mur, colles au spawn ...)						V 
+
+IV.	In game
+	- Tester toutes les touches: WASD, fleches, souris, ESC, Croix rouge					V		  
+
+ENLEVER LE G3 de compilations pour les FACHOS
++ Tout retester avec valgrind 

@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_str_is_wspace.c                                 :+:      :+:    :+:   */
+/*   mlx_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/18 18:02:03 by tlebon            #+#    #+#             */
-/*   Updated: 2025/04/16 20:51:53 by tlebon           ###   ########.fr       */
+/*   Created: 2025/03/15 04:21:46 by tlebon            #+#    #+#             */
+/*   Updated: 2025/04/08 18:32:16 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3D.h"
 
-int	ft_str_is_wspace(char *str)
+int	create_trgb(int t, int r, int g, int b)
 {
-	int	i;
+	return (t << 24 | r << 16 | g << 8 | b);
+}
 
-	if (!str)
-		return (0);
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isspace(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
+void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
 }

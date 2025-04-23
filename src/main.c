@@ -3,73 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lberne <lberne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:02:37 by tlebon            #+#    #+#             */
-/*   Updated: 2025/02/12 18:16:38 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/04/23 20:12:43 by lberne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
 // Returns true if the file pointed to by path has the matching extension
-static t_bool	check_extension(char *path, char *extension)
+static bool	check_extension(char *path, char *extension)
 {
 	size_t	p_size;
 	size_t	e_size;
 	char	*ext_comp;
 
 	if (!path || !extension)
-		return (FALSE);	
+		return (false);
 	p_size = ft_strlen(path);
 	e_size = ft_strlen(extension);
 	ext_comp = ft_substr(path, p_size - e_size, e_size);
-	if (ft_strncmp(extension, ext_comp, e_size) == 0)
-		return (free(ext_comp), TRUE);
-	return (free(ext_comp), FALSE);
+	if (!ext_comp || ft_strncmp(extension, ext_comp, e_size) == 0)
+		return (free(ext_comp), true);
+	return (free(ext_comp), false);
 }
 
 // Initialize the global struct that contains all the necessary structs
 // Returns false on error
-t_bool	init_global(t_global *s_global, char *path)
+bool	init_global(t_global *s_global, char *path)
 {
 	s_global->s_map = malloc(sizeof(t_map));
 	if (!s_global->s_map)
-		return (FALSE);
+		return (false);
 	s_global->s_mlx = malloc(sizeof(t_mlx));
 	if (!s_global->s_mlx)
-		return (free(s_global->s_map), FALSE);
-	if (init_s_map(s_global->s_map, path) == FALSE)
-		return (FALSE);
-	ft_printf("Map struct created with success !\n");
-	ft_print_str_tab(s_global->s_map->map_tab);
-	if (init_s_mlx(s_global->s_mlx) == FALSE)
-		return (FALSE);
-	return (TRUE);
+		return (free(s_global->s_map), free(s_global), false);
+	s_global->s_raycast = malloc(sizeof(t_raycast));
+	if (!s_global->s_raycast)
+		return (free(s_global->s_map), free(s_global->s_mlx), false);
+	if (init_s_map(s_global->s_map, path) == false)
+		return (free_s_map(s_global->s_map), free(s_global->s_mlx),
+			free(s_global->s_raycast), false);
+	if (init_s_mlx(s_global->s_mlx) == false)
+		return (free_s_map(s_global->s_map), free(s_global->s_mlx),
+			free(s_global->s_raycast), false);
+	if (!load_textures(s_global))
+		return (free_s_map(s_global->s_map), destroy_texture(s_global),
+			free_s_mlx(s_global), free(s_global->s_raycast), false);
+	if (init_s_raycast(s_global) == false)
+		return (free_global(s_global), false);
+	return (true);
 }
 
-int	main (int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_global	s_global;
 
 	if (ac != 2)
 		return (ft_printf("Usage : ./cub3D valid_map_path\nThanks\n"), 1);
-	if (check_extension(av[1], ".cub") == FALSE)
-		return (ft_putstr_fd("You need to select a .cub file\n", 2), 2);
+	if (check_extension(av[1], ".cub") == false)
+		return (manage_error("You need to select a .cub file\n"), 2);
 	if (!init_global(&s_global, av[1]))
-		return (3);
-	if (!check_map(&s_global))
-		return (4);
+		return (manage_error("Failed to init global_struct\n"), 3);
+	ft_printf("Initialization success !\n Size of map = (%i ; %i)\n\n",
+		s_global.s_map->width, s_global.s_map->height);
+	ft_printf("Final representation of the map:\n");
+	ft_print_str_tab(s_global.s_map->map_tab);
 	game_loop(&s_global);
 	return (0);
 }
-
-// int	main(void)
-// {
-// 	// char	*s = "	  1111111111111  1111 11  1			   \n";
-// 	char	*s = ft_strdup(" 11				\n   ");
-// 	char	*test = trim_trail(s);
-// 	printf("%s", test);
-// 	return (0);
-// }
-

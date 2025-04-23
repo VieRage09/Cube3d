@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlebon <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 21:03:47 by tlebon            #+#    #+#             */
-/*   Updated: 2023/11/24 18:19:50 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/04/16 18:50:28 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include"libft.h"
+
+#include "libft.h"
 
 char	*ft_strchr(const char *string, int searchedChar)
 {

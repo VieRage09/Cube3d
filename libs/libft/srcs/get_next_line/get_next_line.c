@@ -6,7 +6,7 @@
 /*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:55:40 by tlebon            #+#    #+#             */
-/*   Updated: 2024/10/14 18:55:52 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/04/08 16:51:38 by tlebon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,17 +85,17 @@ static int	get_line(int fd, char *buff, char **line)
 		if (bnchr(buff) != -1)
 		{
 			*line = lucas_safe(*line, ft_substr(buff, 0, bnchr(buff) + 1));
-			shift_buff(buff, bnchr(buff));
-			return (1);
+			return (shift_buff(buff, bnchr(buff)), 1);
 		}
 		*line = lucas_safe(*line, ft_substr(buff, 0, BUFFER_SIZE));
+		if (!*line)
+			return (-1);
 		mehdi_clear(buff);
 		if (check_read < BUFFER_SIZE && check_read > -1)
 		{
 			if (check_read == 0 && *line[0] == '\0')
 				return (0);
-			else
-				return (1);
+			return (1);
 		}
 	}
 }
@@ -115,8 +115,6 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line[0] = '\0';
 	check = get_line(fd, buff, &line);
-	if (!line)
-		return (NULL);
 	if (check <= 0)
 	{
 		free(line);

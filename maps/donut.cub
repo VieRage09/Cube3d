@@ -1,0 +1,31 @@
+F 0, 242, 111 
+
+NO   ./textures/shrek_bed.xpm
+
+
+
+
+
+
+
+
+
+WE            ./textures/farquaad_bed.xpm
+EA ./textures/s_slay.xpm  			
+SO ./textures/full_shrek.xpm
+
+C 110,            0,255
+ 
+ 11111111111 
+100000  0 0 1
+10 0       N1
+100011111   1
+1  10   01  1
+1  1     1  1
+1  10   010 1
+1   11111   1
+1          11
+100       111
+1 0  0   1111
+ 11111111111
+1

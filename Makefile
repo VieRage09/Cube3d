@@ -1,21 +1,40 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: lberne <lberne@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/03/13 15:45:33 by tlebon            #+#    #+#              #
+#    Updated: 2025/04/23 14:50:58 by lberne           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME	= cub3D 
 
 #---------------------COMPILATION-----------------------#
 CC			=	cc
-CFLAGS		=	-g -Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra
 #-------------------------------------------------------#
 
 #---------------------SOURCES---------------------------#
 SRC_PATH	=	src/
-SRC			=						\
-				main.c				\
-				check_map.c			\
-				clean_up.c			\
-				errors.c			\
-				game_loop.c			\
-				init_mlx.c			\
-				init_s_map.c		\
-				utils.c				\
+SRC			=								\
+                main.c						\
+                parsing/check_map.c			\
+                parsing/check_rgb.c			\
+                parsing/clean_up.c			\
+                parsing/errors.c			\
+                parsing/init_map_struct.c	\
+                parsing/init_map_tab.c		\
+                parsing/init_other.c		\
+                parsing/utils_1.c			\
+                parsing/utils_2.c			\
+                execution/draw_frame.c		\
+                execution/game_loop.c		\
+                execution/mlx_utils.c		\
+                execution/player_move.c		\
+                execution/draw_line.c		\
 
 SRCS		=	$(addprefix $(SRC_PATH), $(SRC))
 #-------------------------------------------------------#
@@ -27,8 +46,9 @@ LIBFT_NAME	=	libft.a
 LIBFT_PATH	=	$(LIBS_PATH)libft/
 LIBFT		=	$(LIBFT_PATH)$(LIBFT_NAME)
 
+MLX_NAME	=	$(MLX_PATH)libmlx.a
 MLX_PATH	=	$(LIBS_PATH)minilibx/
-MLX_LINK	=	-L $(MLX_PATH) -lmlx -lXext -lX11
+MLX_LINK	=	-L $(MLX_PATH) -lmlx -lXext -lX11 -lm
 #-------------------------------------------------------#
 
 #---------------------HEADERS---------------------------#
@@ -36,7 +56,8 @@ HDR_PATH	=	include/
 HDR			=	$(HDR_PATH)cub3D.h
 
 INC			=	-I include/\
-				-I $(LIBFT_PATH)includes/\
+                -I $(LIBFT_PATH)includes/\
+                -I /opt/X11/include/
 #-------------------------------------------------------#
 
 #---------------------OBJETS----------------------------#
@@ -47,20 +68,20 @@ OBJS		=	$(addprefix $(OBJ_PATH), $(OBJ))
 
 all: $(NAME)
 
-$(NAME): libft mlx $(OBJS)
+$(NAME): $(OBJS) $(LIBFT) $(MLX_NAME)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(MLX_LINK) $(INC)
 	@make --silent folie
+
+$(LIBFT):
+	@make -sC $(LIBFT_PATH)
+
+$(MLX_NAME):
+	@make -sC $(MLX_PATH)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HDR)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@ $(INC)
-	
-libft:
-	@make -sC $(LIBFT_PATH)
 
-mlx:
-	@make -sC $(MLX_PATH)
-	
 clean:
 	@make --silent sweep
 	@rm -rf $(OBJ_PATH)
@@ -69,8 +90,12 @@ clean:
 
 fclean: clean
 	@rm -rf $(NAME)
+	@make -sC $(LIBFT_PATH) fclean
+	@make -sC $(MLX_PATH) clean
 
-re: fclean all
+re: fclean all 
+
+
 
 # Define color codes
 BLUE	= \033[94m
@@ -94,4 +119,4 @@ sweep:
 	@printf "                                                                                   /_/       ${RESET}\n"
 
 
-.PHONY: clean fclean re folie sweep
+.PHONY: mlx libft clean fclean re folie sweep

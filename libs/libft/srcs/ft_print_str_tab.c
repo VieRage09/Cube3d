@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_str_tab.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlebon <tlebon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lberne <lberne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 18:32:37 by tlebon            #+#    #+#             */
-/*   Updated: 2024/09/29 17:31:27 by tlebon           ###   ########.fr       */
+/*   Updated: 2025/04/23 19:14:12 by lberne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ int	ft_print_str_tab(char **tab)
 		ft_putstr("\n");
 		(tab)++;
 	}
+	ft_putstr("\n");
 	return (0);
 }
