@@ -6,7 +6,7 @@
 /*   By: lberne <lberne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:02:37 by tlebon            #+#    #+#             */
-/*   Updated: 2025/04/23 20:12:43 by lberne           ###   ########.fr       */
+/*   Updated: 2025/04/23 21:49:02 by lberne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ int	main(int ac, char **av)
 		return (manage_error("Failed to init global_struct\n"), 3);
 	ft_printf("Initialization success !\n Size of map = (%i ; %i)\n\n",
 		s_global.s_map->width, s_global.s_map->height);
-	ft_printf("Final representation of the map:\n");
-	ft_print_str_tab(s_global.s_map->map_tab);
 	game_loop(&s_global);
 	return (0);
 }

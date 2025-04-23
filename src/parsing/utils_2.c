@@ -6,7 +6,7 @@
 /*   By: lberne <lberne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 01:39:44 by tlebon            #+#    #+#             */
-/*   Updated: 2025/04/23 19:54:59 by lberne           ###   ########.fr       */
+/*   Updated: 2025/04/23 22:09:29 by lberne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,3 +45,25 @@ bool	is_wspace(char c)
 		return (false);
 }
 
+void	print_map(t_map *s_map)
+{
+	int		i;
+	int		j;
+	char	**copy;
+
+	i = 0;
+	copy = copy_map(s_map);
+	while (copy[i])
+	{
+		j = 0;
+		while (copy[i][j])
+		{
+			if (copy[i][j] == '0')
+				copy[i][j] = '.';
+			j++;
+		}
+		i++;
+	}
+	ft_print_str_tab(copy);
+	ft_free_tab((void **)copy);
+}

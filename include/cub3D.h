@@ -6,7 +6,7 @@
 /*   By: lberne <lberne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:03:07 by tlebon            #+#    #+#             */
-/*   Updated: 2025/04/23 19:38:50 by lberne           ###   ########.fr       */
+/*   Updated: 2025/04/23 22:10:44 by lberne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ bool	find_player_spawn(char **map, t_pos *s_pos);
 char	**copy_map(t_map *s_map);
 bool	is_player_spawn(char c);
 bool	is_valid(char c);
-bool	enclosed(char **map);
+void	print_map(t_map *s_map);
 bool	is_xpm(char *path);
 bool	is_wspace(char c);
 

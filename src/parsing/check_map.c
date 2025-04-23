@@ -6,7 +6,7 @@
 /*   By: lberne <lberne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:15:35 by tlebon            #+#    #+#             */
-/*   Updated: 2025/04/23 20:20:09 by lberne           ###   ########.fr       */
+/*   Updated: 2025/04/23 23:15:01 by lberne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,71 +33,71 @@ static bool	check_invalid_char(char **map)
 	return (true);
 }
 
-static bool	validate_enclosure(char **map, int i, int j, int height, int width)
+bool	validate_enclosure(char **map, int i, int j, t_map *s_map)
 {
-    // Check if we are out of bounds
-    if (i < 0 || j < 0 || i >= height || j >= width)
-        return (false);
+	bool	up;
+	bool	down;
+	bool	left;
+	bool	right;
 
-    // If we hit a wall or already visited tile, stop
-    if (map[i][j] == '1' || map[i][j] == 'x')
-        return (true);
+	if (i < 0 || j < 0 || i >= (int)s_map->height || j >= (int)s_map->width)
+		return (false);
+	if (map[i][j] == '1' || map[i][j] == 'x')
+		return (true);
+	if (map[i][j] == ' ' || map[i][j] == '\0')
+		return (false);
+	map[i][j] = 'x';
+	up = validate_enclosure(map, i - 1, j, s_map);
+	down = validate_enclosure(map, i + 1, j, s_map);
+	left = validate_enclosure(map, i, j - 1, s_map);
+	right = validate_enclosure(map, i, j + 1, s_map);
+	return (up && down && left && right);
+}
 
-    // If we hit a space or invalid character, the map is open
-    if (map[i][j] == ' ' || map[i][j] == '\0')
-        return (false);
+bool	check_loop(char **map, t_map *s_map)
+{
+	int	i;
+	int	j;
 
-    // Mark the current tile as visited
-    map[i][j] = 'x';
-
-    // Recursively check all four directions
-    bool up = validate_enclosure(map, i - 1, j, height, width);
-    bool down = validate_enclosure(map, i + 1, j, height, width);
-    bool left = validate_enclosure(map, i, j - 1, height, width);
-    bool right = validate_enclosure(map, i, j + 1, height, width);
-
-    // Return true only if all directions are enclosed
-    return (up && down && left && right);
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == '0')
+			{
+				if (!validate_enclosure(map, i, j, s_map))
+				{
+					ft_free_tab((void **)map);
+					return (manage_error("Map is open\n"), false);
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+	return (true);
 }
 
 bool	check_map(t_map *s_map)
 {
-    char	**map;
-    t_pos	spawn;
+	char	**map;
 
-    if (!s_map)
-        return (false);
-
-    // Create a copy of the map for validation
-    map = copy_map(s_map);
-    if (!map)
-        return (ft_putstr_fd("Failed to copy map\n", 2), false);
-
-    ft_printf("Final representation of the map:\n");
-    ft_print_str_tab(s_map->map_tab);
-
-    // Find the player's spawn point
-    if (!find_player_spawn(map, &spawn))
-    {
-        ft_free_tab((void **)map);
-        return (manage_error("No player spawn or too many\n"), false);
-    }
-
-    // Check for invalid characters
-    if (!check_invalid_char(map))
-    {
-        ft_free_tab((void **)map);
-        return (manage_error("Invalid char in the map definition\n"), false);
-    }
-
-    // Validate enclosure using flood-fill
-    if (!validate_enclosure(map, spawn.ypos, spawn.xpos, s_map->height, s_map->width))
-    {
-        ft_free_tab((void **)map);
-        return (manage_error("Map is open\n"), false);
-    }
-
-    // Free the map copy
-    ft_free_tab((void **)map);
-    return (true);
+	if (!s_map)
+		return (false);
+	map = copy_map(s_map);
+	if (!map)
+		return (ft_putstr_fd("Failed to copy map\n", 2), false);
+	ft_printf("Final representation of the map:\n");
+	print_map(s_map);
+	if (!check_invalid_char(map))
+	{
+		ft_free_tab((void **)map);
+		return (manage_error("Invalid char in the map definition\n"), false);
+	}
+	if (!check_loop(map, s_map))
+		return (false);
+	ft_free_tab((void **)map);
+	return (true);
 }
