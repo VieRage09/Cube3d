@@ -6,7 +6,7 @@
 /*   By: lberne <lberne@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:15:35 by tlebon            #+#    #+#             */
-/*   Updated: 2025/04/23 23:15:01 by lberne           ###   ########.fr       */
+/*   Updated: 2025/04/24 20:16:15 by lberne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,10 @@ bool	check_loop(char **map, t_map *s_map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] == '0')
+			if (map[i][j] == '0' || is_player_spawn(map[i][j]))
 			{
 				if (!validate_enclosure(map, i, j, s_map))
-				{
-					ft_free_tab((void **)map);
 					return (manage_error("Map is open\n"), false);
-				}
 			}
 			j++;
 		}
@@ -80,12 +77,38 @@ bool	check_loop(char **map, t_map *s_map)
 	return (true);
 }
 
+bool	check_spawn(char **map)
+{
+	int	i;
+	int	j;
+	int	nb_spawn;
+
+	nb_spawn = 0;
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (is_player_spawn(map[i][j]))
+				nb_spawn++;
+			j++;
+		}
+		i++;
+	}
+	if (nb_spawn < 1)
+		return (printf("no spawn found\n"), false);
+	if (nb_spawn > 1)
+		return (printf("more than 1 spawn found\n"), false);
+	return (true);
+}
+
 bool	check_map(t_map *s_map)
 {
 	char	**map;
 
 	if (!s_map)
-		return (false);
+		return (printf("no map found"), false);
 	map = copy_map(s_map);
 	if (!map)
 		return (ft_putstr_fd("Failed to copy map\n", 2), false);
@@ -96,8 +119,10 @@ bool	check_map(t_map *s_map)
 		ft_free_tab((void **)map);
 		return (manage_error("Invalid char in the map definition\n"), false);
 	}
+	if (!check_spawn(map))
+		return (ft_free_tab((void **)map), false);
 	if (!check_loop(map, s_map))
-		return (false);
+		return (ft_free_tab((void **)map), false);
 	ft_free_tab((void **)map);
 	return (true);
 }
